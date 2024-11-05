@@ -71,24 +71,24 @@ on run argv
             try
                 do shell script "echo " & quoted form of htmlContent & " > " & quoted form of tmpFilePath
             end try
-            try
-                do shell script "rm " & quoted form of cleanedTmpFilePath
-            end try
+            -- try
+            --     do shell script "rm " & quoted form of tmpFilePath
+            -- end try
             try
                 -- clean up <br> and other unclosed tags that cause transformation errors
-                do shell script "tidy -utf8 -asxhtml -i -b -q -o cleaned_tmp.xhtml " & quoted form of tmpFilePath -- & quoted form of cleanedTmpFilePath & " " & quoted form of tmpFilePath
+                do shell script "tidy -utf8 -asxhtml -i -b -q -m tmp.html"
             end try
             try
                 -- replace the schema and doctype with <html> to prevent XSLT transformation errors
-                do shell script "echo \"<html>\\n`tail -n +5 cleaned_tmp.xhtml`\" > cleaned_tmp.xhtml"
+                do shell script "echo \"<html>\\n`tail -n +5 tmp.html`\" > tmp.html"
             end try
             try
                 -- tidy is messing up &lt; and turning it into &amp;lt
-                do shell script "sed -i '' 's/&amp;lt/\\&lt;/g' cleaned_tmp.xhtml"
+                do shell script "sed -i '' 's/&amp;lt/\\&lt;/g' tmp.html"
             end try
             try
                 -- transform the cleaned file to markdown
-                do shell script "xmlstarlet tr ./notes-to-markdown.xslt " & quoted form of cleanedTmpFilePath & " > " & quoted form of outputFilePath
+                do shell script "xmlstarlet tr ./notes-to-markdown.xslt " & quoted form of tmpFilePath & " > " & quoted form of outputFilePath
             end try
         end repeat
     end tell
