@@ -46,17 +46,6 @@ on run argv
             
             log "- exporting: '" & (name of theNote) & "' -- to " & noteGuid & ".md"
 
-            -- Convert noteTitle to lowercase
-            -- set noteTitle to do shell script "echo " & quoted form of noteTitle & " | tr '[:upper:]' '[:lower:]'"
-
-            -- Replace spaces with hyphens to convert to kebab-case
-            -- set noteTitle to do shell script "echo " & quoted form of noteTitle & " | sed 's/ /-/g'"
-            
-            -- set noteFileName to noteGuid & "-" & noteTitle
-            -- log "note file: " & noteFileName
-            -- set noteProperties to properties of theNote
-            -- log "Note properties: " & noteProperties
-            
             set htmlContent to "<html>" & (body of theNote) & "</html>"
 
             -- Save HTML content to a temporary file
