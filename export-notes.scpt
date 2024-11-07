@@ -1,15 +1,23 @@
 on run argv
     -- Check if the correct number of arguments is passed
-    if (count of argv) is not equal to 3 then
+    set folderNameArg to ""
+
+    set outputDirectoryArg to ""
+
+    log count of argv
+    if (count of argv) is not equal to 2 then
         log "Usage: export-notes.scpt <notes folder> <output path>\n"
+    else
+        set folderNameArg to item 1 of argv
+
+        set outputDirectoryArg to item 2 of argv
+        try
+            do shell script "mkdir -p " & quoted form of outputDirectoryArg
+        end try
     end if
 
-    -- Get the folder name from the arguments
-    set folderNameArg to item 1 of argv
-
-    set outputDirectoryArg to item 2 of argv
-
     tell application "Notes"
+    
         set theAccounts to every account
 
         set anAccount to the first item of theAccounts
@@ -29,6 +37,9 @@ on run argv
             log "Folders: " & folderNames -- Log all folder names at once, separated by newlines
             return
         end if
+
+
+        -- Get the folder name from the arguments
 
         set aFolder to folder folderNameArg of anAccount
 
